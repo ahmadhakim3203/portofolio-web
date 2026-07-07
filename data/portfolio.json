@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2024-01-01T00:00:00.000Z",
+    "totalVisits": 0
+  },
+  "personal": {
+    "name": "Nama Anda",
+    "title": "Professional Title",
+    "email": "email@example.com",
+    "phone": "+62 812-3456-7890",
+    "linkedin": "linkedin.com/in/username",
+    "github": "github.com/username",
+    "photo": "",
+    "summary": "Tulis ringkasan profesional Anda di sini...",
+    "location": "Kota, Indonesia"
+  },
+  "work": [],
+  "organization": [],
+  "training": [],
+  "certificate": [],
+  "education": [],
+  "skill": [],
+  "project": [],
+  "language": [],
+  "social": []
+}
