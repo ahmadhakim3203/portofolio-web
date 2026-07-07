@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Portfolio Pro</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Admin CSS -->
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body class="admin-body">
+    <!-- Loading -->
+    <div id="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner-border text-light" role="status"></div>
+            <p class="mt-2 text-white" id="loading-message">Memuat data...</p>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Admin Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-shield-lock-fill"></i> Admin Panel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-section="dashboard">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="personal">
+                            <i class="bi bi-person-fill"></i> Data Diri
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-folder2-open"></i> Portfolio
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" data-category="work">💼 Pengalaman Kerja</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="organization">👥 Organisasi</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="training">📚 Pelatihan</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="certificate">🎖️ Sertifikat</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="education">🎓 Pendidikan</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="skill">⚡ Keahlian</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="project">🚀 Proyek</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="language">🌐 Bahasa</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="tools">
+                            <i class="bi bi-tools"></i> Tools
+                        </a>
+                    </li>
+                </ul>
+                <div class="navbar-nav">
+                    <span class="navbar-text text-light me-3">
+                        <i class="bi bi-person-check"></i> Admin
+                    </span>
+                    <a href="index.html" class="btn btn-outline-light btn-sm me-2" target="_blank">
+                        <i class="bi bi-eye"></i> Lihat Website
+                    </a>
+                    <button class="btn btn-danger btn-sm" onclick="logout()">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2">
+                <div class="admin-sidebar">
+                    <h6 class="sidebar-title">MANAGEMENT</h6>
+                    <a href="#" class="sidebar-link active" data-section="dashboard">
+                        <i class="bi bi-grid"></i> Dashboard
+                    </a>
+                    <a href="#" class="sidebar-link" data-section="personal">
+                        <i class="bi bi-person"></i> Data Diri
+                    </a>
+                    
+                    <h6 class="sidebar-title mt-4">PORTFOLIO</h6>
+                    <a href="#" class="sidebar-link" data-category="work">
+                        <i class="bi bi-briefcase"></i> Pengalaman Kerja
+                        <span class="badge bg-primary float-end" id="sidebar-count-work">0</span>
+                    </a>
+                    <a href="#" class="sidebar-link" data-category="organization">
+                        <i class="bi bi-people"></i> Organisasi
+                        <span class="badge bg-success float-end" id="sidebar-count-org">0</span>
+                    </a>
+                    <a href="#" class="sidebar-link" data-category="training">
+                        <i class="bi bi-book"></i> Pelatihan
+                        <span class="badge bg-info float-end" id="sidebar-count-training">0</span>
+                    </a>
+                    <a href="#" class="sidebar-link" data-category="certificate">
+                        <i class="bi bi-award"></i> Sertifikat
+                        <span class="badge bg-warning float-end" id="sidebar-count-cert">0</span>
+                    </a>
+                    <a href="#" class="sidebar-link" data-category="education">
+                        <i class="bi bi-mortarboard"></i> Pendidikan
+                        <span class="badge bg-secondary float-end" id="sidebar-count-edu">0</span>
+                    </a>
+                    <a href="#" class="sidebar-link" data-category="skill">
+                        <i class="bi bi-gear"></i> Keahlian
+                        <span class="badge bg-danger float-end" id="sidebar-count-skill">0</span>
+                    </a>
+                    <a href="#" class="sidebar-link" data-category="project">
+                        <i class="bi bi-rocket"></i> Proyek
+                        <span class="badge bg-dark float-end" id="sidebar-count-project">0</span>
+                    </a>
+                    
+                    <h6 class="sidebar-title mt-4">TOOLS</h6>
+                    <a href="#" class="sidebar-link" data-section="tools">
+                        <i class="bi bi-tools"></i> Import/Export
+                    </a>
+                    <a href="#" class="sidebar-link" onclick="syncData()">
+                        <i class="bi bi-cloud-arrow-down"></i> Sync dari GitHub
+                    </a>
+                    <a href="#" class="sidebar-link" onclick="forceSave()">
+                        <i class="bi bi-cloud-arrow-up"></i> Force Save
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Content Area -->
+            <div class="col-md-10">
+                <!-- Dashboard -->
+                <div id="section-dashboard" class="admin-section active">
+                    <h3 class="mb-4"><i class="bi bi-speedometer2"></i> Dashboard Admin</h3>
+                    
+                    <!-- Stats -->
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="stat-card bg-primary">
+                                <div class="stat-icon"><i class="bi bi-briefcase"></i></div>
+                                <div class="stat-number" id="stat-work">0</div>
+                                <div class="stat-label">Pengalaman Kerja</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="stat-card bg-success">
+                                <div class="stat-icon"><i class="bi bi-people"></i></div>
+                                <div class="stat-number" id="stat-organization">0</div>
+                                <div class="stat-label">Organisasi</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="stat-card bg-info">
+                                <div class="stat-icon"><i class="bi bi-book"></i></div>
+                                <div class="stat-number" id="stat-training">0</div>
+                                <div class="stat-label">Pelatihan</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="stat-card bg-warning">
+                                <div class="stat-icon"><i class="bi bi-award"></i></div>
+                                <div class="stat-number" id="stat-certificate">0</div>
+                                <div class="stat-label">Sertifikat</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Info -->
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header"><h5><i class="bi bi-info-circle"></i> Informasi Sistem</h5></div>
+                                <div class="card-body">
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td><strong>Versi</strong></td>
+                                            <td id="info-version">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Terakhir Update</strong></td>
+                                            <td id="info-last-update">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Total Pengunjung</strong></td>
+                                            <td id="info-visitors">0</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Status</strong></td>
+                                            <td><span class="badge bg-success" id="info-status">Online</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header"><h5><i class="bi bi-lightning-charge"></i> Quick Actions</h5></div>
+                                <div class="card-body">
+                                    <button class="btn btn-primary w-100 mb-2" onclick="syncData()">
+                                        <i class="bi bi-cloud-download"></i> Sync Data dari GitHub
+                                    </button>
+                                    <button class="btn btn-success w-100 mb-2" onclick="forceSave()">
+                                        <i class="bi bi-cloud-upload"></i> Simpan ke GitHub
+                                    </button>
+                                    <button class="btn btn-info w-100 mb-2" onclick="exportData()">
+                                        <i class="bi bi-download"></i> Export Backup JSON
+                                    </button>
+                                    <button class="btn btn-warning w-100" onclick="importData()">
+                                        <i class="bi bi-upload"></i> Import Data JSON
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Personal Data -->
+                <div id="section-personal" class="admin-section" style="display:none;">
+                    <h3 class="mb-4"><i class="bi bi-person-fill"></i> Edit Data Diri</h3>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="personal-form">
+                                <div class="row">
+                                    <div class="col-md-3 text-center">
+                                        <img id="preview-photo" src="assets/placeholder.jpg" class="img-thumbnail mb-3" style="width:150px;height:150px;object-fit:cover;border-radius:50%;">
+                                        <input type="file" class="form-control" accept="image/*" onchange="previewImage(this)">
+                                        <small class="text-muted">Foto profil (max 2MB)</small>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Nama Lengkap *</label>
+                                                <input type="text" class="form-control" id="edit-name" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Professional Title</label>
+                                                <input type="text" class="form-control" id="edit-title">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="edit-email">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Telepon</label>
+                                                <input type="text" class="form-control" id="edit-phone">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">LinkedIn</label>
+                                                <input type="text" class="form-control" id="edit-linkedin">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">GitHub</label>
+                                                <input type="text" class="form-control" id="edit-github">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Website</label>
+                                                <input type="url" class="form-control" id="edit-website">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Lokasi</label>
+                                                <input type="text" class="form-control" id="edit-location">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label">Ringkasan Profesional</label>
+                                        <textarea class="form-control" id="edit-summary" rows="4"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary btn-lg">
+                                            <i class="bi bi-check-lg"></i> Simpan Perubahan
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Category Content -->
+                <div id="section-category" class="admin-section" style="display:none;">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 id="admin-category-title">Pengalaman Kerja</h3>
+                        <button class="btn btn-primary btn-lg" onclick="addItem()">
+                            <i class="bi bi-plus-circle"></i> Tambah Item
+                        </button>
+                    </div>
+                    
+                    <div id="admin-items-container">
+                        <div class="text-center py-5">
+                            <div class="spinner-border" role="status"></div>
+                            <p>Memuat data...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tools -->
+                <div id="section-tools" class="admin-section" style="display:none;">
+                    <h3 class="mb-4"><i class="bi bi-tools"></i> Tools & Utilities</h3>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-file-pdf display-3 text-danger"></i>
+                                    <h5>Generate CV PDF</h5>
+                                    <button class="btn btn-danger" onclick="generateCVPDF()">
+                                        <i class="bi bi-download"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-printer display-3 text-primary"></i>
+                                    <h5>Print Portfolio</h5>
+                                    <button class="btn btn-primary" onclick="generatePortfolioPDF()">
+                                        <i class="bi bi-printer"></i> Print PDF
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-clock-history display-3 text-info"></i>
+                                    <h5>Version History</h5>
+                                    <button class="btn btn-info" onclick="showHistory()">
+                                        <i class="bi bi-eye"></i> Lihat History
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Export Options -->
+                    <div class="card mt-4">
+                        <div class="card-header"><h5>Export Options</h5></div>
+                        <div class="card-body">
+                            <button class="btn btn-outline-primary m-1" onclick="exportAllJSON()">
+                                <i class="bi bi-filetype-json"></i> Export All (JSON)
+                            </button>
+                            <button class="btn btn-outline-success m-1" onclick="exportAllCSV()">
+                                <i class="bi bi-file-earmark-spreadsheet"></i> Export All (CSV)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Item Modal -->
+    <div class="modal fade" id="itemModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modal-title">Tambah Item</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="saveItem()">
+                        <i class="bi bi-check-lg"></i> Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div class="modal fade" id="historyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-clock-history"></i> Version History</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Message</th>
+                                    <th>Date</th>
+                                    <th>Author</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/github-storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin-app.js"></script>
+    <script src="js/crud.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/pdf-generator.js"></script>
+</body>
+</html>
