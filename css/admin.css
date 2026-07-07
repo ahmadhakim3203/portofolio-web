@@ -1,0 +1,202 @@
+/* css/admin.css */
+.admin-body {
+    background: #1a1a2e;
+    color: #e0e0e0;
+    min-height: 100vh;
+}
+
+/* Admin Navbar */
+.navbar-dark.bg-dark {
+    background: #16213e !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* Admin Sidebar */
+.admin-sidebar {
+    background: #0f3460;
+    border-radius: 10px;
+    padding: 20px;
+    position: sticky;
+    top: 80px;
+}
+
+.sidebar-title {
+    color: #e94560;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.sidebar-link {
+    display: block;
+    color: #e0e0e0;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s;
+    margin-bottom: 5px;
+}
+
+.sidebar-link:hover {
+    background: rgba(233, 69, 96, 0.1);
+    color: #e94560;
+    padding-left: 20px;
+}
+
+.sidebar-link.active {
+    background: #e94560;
+    color: white;
+}
+
+.sidebar-link .badge {
+    font-size: 0.7rem;
+}
+
+/* Admin Sections */
+.admin-section {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.admin-section.active {
+    display: block;
+}
+
+/* Stat Cards - Admin Version */
+.stat-card {
+    border-radius: 15px;
+    padding: 25px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.stat-card .stat-icon {
+    font-size: 3rem;
+    opacity: 0.2;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+}
+
+.stat-card .stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.stat-card .stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Admin Cards */
+.card {
+    background: #16213e;
+    border: 1px solid #0f3460;
+    border-radius: 10px;
+    color: #e0e0e0;
+}
+
+.card-header {
+    background: #0f3460;
+    border-bottom: 1px solid #1a1a2e;
+    color: white;
+}
+
+/* Admin Forms */
+.form-control, .form-select {
+    background: #1a1a2e;
+    border: 1px solid #0f3460;
+    color: #e0e0e0;
+    border-radius: 8px;
+}
+
+.form-control:focus, .form-select:focus {
+    background: #1a1a2e;
+    border-color: #e94560;
+    color: white;
+    box-shadow: 0 0 0 0.2rem rgba(233, 69, 96, 0.25);
+}
+
+.form-label {
+    color: #e0e0e0;
+    font-weight: 500;
+}
+
+/* Admin Tables */
+.table {
+    color: #e0e0e0;
+}
+
+.table td {
+    border-color: #0f3460;
+}
+
+/* Admin Buttons */
+.btn-primary {
+    background: #e94560;
+    border-color: #e94560;
+}
+
+.btn-primary:hover {
+    background: #c23152;
+    border-color: #c23152;
+}
+
+/* Admin Modal */
+.modal-content {
+    background: #16213e;
+    color: #e0e0e0;
+}
+
+.modal-header {
+    border-bottom: 1px solid #0f3460;
+}
+
+.modal-footer {
+    border-top: 1px solid #0f3460;
+}
+
+/* Item Cards in Admin */
+.admin-item-card {
+    background: #16213e;
+    border: 1px solid #0f3460;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s;
+}
+
+.admin-item-card:hover {
+    border-color: #e94560;
+    box-shadow: 0 5px 20px rgba(233, 69, 96, 0.1);
+}
+
+/* Loading Overlay */
+#loading-overlay {
+    background: rgba(26, 26, 46, 0.95);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-sidebar {
+        position: static;
+        margin-bottom: 20px;
+    }
+    
+    .stat-card {
+        padding: 15px;
+    }
+    
+    .stat-card .stat-number {
+        font-size: 1.8rem;
+    }
+}
