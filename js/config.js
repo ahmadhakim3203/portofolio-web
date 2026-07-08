@@ -17,7 +17,7 @@ const GITHUB_CONFIG = {
     // Personal Access Token GitHub
     // Cara dapatkan: GitHub Settings > Developer settings > Personal access tokens > Tokens (classic)
     // Izinkan akses: repo (semua)
-    token: 'ghp_xxxxxxxxxxxxxxxxxxxx', // GANTI INI!
+    token: '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', // GANTI INI!
     
     // Kredensial Admin
     admin: {
